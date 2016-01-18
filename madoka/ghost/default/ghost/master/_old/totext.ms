@@ -1,1 +1,0 @@
-include "$scripts\\ToolManager\\ghost\\default\\ghost\\master\\text.ms"
