@@ -1,4 +1,4 @@
-macroScript BipedXtraSelector category:"exsatools" internalCategory:"exsatools" toolTip:"BipedXtraSelector" buttonText:"BipXSelector"
+macroScript BipedXtraSelector category:"tools" internalCategory:"tools" toolTip:"BipedXtraSelector" buttonText:"BipXSelector"
 (
 local xtrabonesarr 
 
