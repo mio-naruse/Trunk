@@ -1,5 +1,5 @@
 --ROLLOUTGROUP MODEL---------------------------------------------------------------------------
-fn model_rollout = (
+fn model_rollout sRoll= (
 	--Quad Chamfer Checker
 	rollout Charlotte "Quad Chamfer Checker" 
 	(
@@ -541,25 +541,25 @@ fn model_rollout = (
 		)
 	)
 
-	AddSubRollout subRoll Charlotte rolledUp:true
-	AddSubRollout subRoll Sylvia
-	AddSubRollout subRoll Melody
-	AddSubRollout subRoll Tina
-	AddSubRollout subRoll Stella rolledUp:true
-	AddSubRollout subRoll Matilda rolledUp:true
-	AddSubRollout subRoll Kelly rolledUp:true
-	AddSubRollout subRoll Priscilla
-	AddSubRollout subRoll Iris
-	AddSubRollout subRoll convinst rolledUp:true
-	AddSubRollout subRoll Lola
-	AddSubRollout subRoll Victoria rolledUp:true
-	AddSubRollout subRoll Bonnie rolledUp:true
-	AddSubRollout subRoll Lisa
-	AddSubRollout subRoll Katherine
+	AddSubRollout sRoll Charlotte rolledUp:true
+	AddSubRollout sRoll Sylvia
+	AddSubRollout sRoll Melody
+	AddSubRollout sRoll Tina
+	AddSubRollout sRoll Stella rolledUp:true
+	AddSubRollout sRoll Matilda rolledUp:true
+	AddSubRollout sRoll Kelly rolledUp:true
+	AddSubRollout sRoll Priscilla
+	AddSubRollout sRoll Iris
+	AddSubRollout sRoll convinst rolledUp:true
+	AddSubRollout sRoll Lola
+	AddSubRollout sRoll Victoria rolledUp:true
+	AddSubRollout sRoll Bonnie rolledUp:true
+	AddSubRollout sRoll Lisa
+	AddSubRollout sRoll Katherine
 )
 
 --ROLLOUTGROUP RENDARING----------------------------------------------------------------------
-fn render_rollout = (
+fn render_rollout sRoll = (
 	--RenderElementRenamer------------------------------------------------------------
 	rollout Rebecca "RenderElementRenamer" 
 	(
@@ -613,11 +613,11 @@ fn render_rollout = (
 		)
 	)
 	-----------------------------------------------------------------------------------------
-	AddSubRollout subRoll Rebecca
+	AddSubRollout sRoll Rebecca
 )
 
 --ROLLOUTGROUP ANIMATION-----------------------------------------------------------------------
-fn anim_rollout = (
+fn anim_rollout sRoll = (
 	--Biped Attach Tool------------------------------------------------------------
 	rollout Bicky "biped Attach Tool"
 	(
@@ -1336,13 +1336,13 @@ fn anim_rollout = (
 		)
 	)
 	-----------------------------------------------------------------------------------------
-	AddSubRollout subRoll Bicky
-	AddSubRollout subRoll Scarlett
-	AddSubRollout subRoll Iria
+	AddSubRollout sRoll Bicky
+	AddSubRollout sRoll Scarlett
+	AddSubRollout sRoll Iria
 )
 ---------------------------------------------------------------------------------------------------
 
-fn about_rollout = (
+fn about_rollout sRoll = (
 	rollout upcheckroll "UPdate check"
 	(
 		--Add a version infomation.
@@ -1394,7 +1394,7 @@ fn about_rollout = (
 		label makeby_lbl makeby align:#center
 	)
 	
-	AddSubRollout subRoll upcheckroll
-	AddSubRollout subRoll aboutroll
+	AddSubRollout sRoll upcheckroll
+	AddSubRollout sRoll aboutroll
 )
 ---------------------------------------------------------------------------------------------------
