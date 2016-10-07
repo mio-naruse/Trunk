@@ -74,6 +74,8 @@ macroScript madoka category:"Madoka" internalCategory:"Madoka" toolTip:"madoka" 
 	)
 
 	---------------------------------------------------------------------------------------------------
+
+	include "$scripts\\madoka\\mdk_rollouts.ms"
 	--main rollout---------------------------------------------------------------------------------------------	
 	fn createMainrollout newfloater = (
 		rollout main_rollout "madoka"
@@ -142,7 +144,6 @@ macroScript madoka category:"Madoka" internalCategory:"Madoka" toolTip:"madoka" 
 	)
 		--Main Executing part------------------------------------------------------------------------------------------
 		on execute do (
-				fileIn "$scripts\\madoka\\mdk_rollouts.ms"
 			--About & UPdate------------------------------------------------------------------------------------
 			fn currentVercheck = (
 				--getting now initial verssion--------------------------------------------
