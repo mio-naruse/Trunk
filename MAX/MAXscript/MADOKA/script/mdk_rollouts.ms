@@ -1,33 +1,5 @@
 --ROLLOUTGROUP MODEL---------------------------------------------------------------------------
 fn model_rollout sRoll= (
-	--Quad Chamfer Checker
-	rollout Charlotte "Quad Chamfer Checker" 
-	(
-		Button Chk_BTN "Check Quad Chamfer" width:140 height:30 align:#center
-		on Chk_BTN pressed do (
-			local list_obj = #()
-			if selection.count == 0 then (
-				messagebox "Please select objects" title:"Alart!"
-			)
-			else (
-				--try(DestroyDialog Cecilia)catch()
-				j = 1
-				for i in selection do (
-					if isGroupHead i then (setGroupOpen i true)
-					else (
-						for s = 1 to i.modifiers.count do (
-							if (i.modifiers[s].name == "Quad Chamfer") do (
-								list_obj[j] = i.name
-								j = j + 1
-							)
-						)
-					)
-				)
-				Cecilia_list_obj = list_obj
-				openCecilia()
-			)--else end--
-		)	
-	)
 	--ScaleChecker
 	rollout Sylvia "Scale Checker" 
 	(
@@ -366,42 +338,6 @@ fn model_rollout sRoll= (
 		)
 	)
 	
-	--QuickSkinVertexWeight
-	rollout Victoria "QuickSkinVertexWeight" 
-	(
-		Button Victoria_BTN "Start"  width:140 height:30 align:#center
-		hyperLink CF "cf.AREA" address:"http://area.autodesk.com/blogs/chris/maxscript---mouse-tools-for-vertex-weight-during-skinning" visitedColor:(color 192 192 192)
-			
-		tool AssignSkinVertexWeightTool
-		(
-			local original
-			fn setweight wt = (
-				if (wt < 0) then wt = 0
-				if (wt > 1.0) then wt = 1.0
-				skinOps.setWeight $.modifiers[#Skin] wt
-				$.modifiers[#Skin].effect = wt
-			)        
-			on mousePoint clickno do (          
-				if clickno > 1 then return #stop   
-				original = $.modifiers[#Skin].effect
-			)
-			on mouseAbort clickno do (
-				setweight original
-			)
-			on mouseMove clickno do (
-				newval = (original + (gridDist.x  * 0.01))
-				setweight newval
-			)
-		)
-		
-		on Victoria_BTN pressed do (
-			try (
-		    startTool AssignSkinVertexWeightTool prompt:"Set Vertex Weight"
-			)
-			catch()
-			)
-	)
-	
 	--BoneConverter
 	rollout Bonnie "BoneConverter" 
 	(
@@ -541,7 +477,6 @@ fn model_rollout sRoll= (
 		)
 	)
 
-	AddSubRollout sRoll Charlotte rolledUp:true
 	AddSubRollout sRoll Sylvia
 	AddSubRollout sRoll Melody
 	AddSubRollout sRoll Tina
@@ -552,7 +487,6 @@ fn model_rollout sRoll= (
 	AddSubRollout sRoll Iris
 	AddSubRollout sRoll convinst rolledUp:true
 	AddSubRollout sRoll Lola
-	AddSubRollout sRoll Victoria rolledUp:true
 	AddSubRollout sRoll Bonnie rolledUp:true
 	AddSubRollout sRoll Lisa
 	AddSubRollout sRoll Katherine
@@ -1325,76 +1259,18 @@ fn anim_rollout sRoll = (
 				)
 				)-- on BTN end--
 	)
-	--Create Rig Controller
-	rollout Iria "Create Rig Controller" 
-	(
-		fn fn_btn_img str1 = (#(icon_Path+str1+".bmp", icon_Path+str1+"_mask"+".bmp", 1, 1, 1, 1, 1))
-
-		Button Iria_Arc_BTN ""  width:30 height:30 align:#left images:(fn_btn_img "Arc_icon")
-		on Iria_Arc_BTN pressed do (
-			mergeMAXFile Arc_1 #AutoRenameDups
-		)
-	)
 	-----------------------------------------------------------------------------------------
 	AddSubRollout sRoll Bicky
 	AddSubRollout sRoll Scarlett
-	AddSubRollout sRoll Iria
 )
 ---------------------------------------------------------------------------------------------------
 
 fn about_rollout sRoll = (
-	rollout upcheckroll "UPdate check"
-	(
-		--Add a version infomation.
-		label lbl_ver VersionInfo align:#center
-		Button UPcheck_btn "Check new Version"
-		on UPcheck_Btn pressed do (
-				--Load Server----------------------------------------------------------------------------------------
-			fn fnupcheck = (
-				local scriptRoot = "$scripts\\exsa_Toolset\\"
-				local myUpdaterIni = (scriptRoot + "__version.ini")
-				local initVersion = (getINISetting myUpdaterIni "version" "VAL")
-				local getURL = (getINISetting myUpdaterIni "config" "LOAD_URL")
-				getURL2 = getURL
-				local getUpdaterIni = (getURL2 + "__version.ini")
-				local serverVersion = (getINISetting getUpdaterIni "version" "VAL")
-				
-				local initversion_array = FilterString initversion "."
-				local serverversion_array = FilterString serverversion "."
-				local verfrag = 0
-				
-				for i = 3 to 1 by -1  do (
-					intversion_tmp = initversion_array[i] as integer
-					serversion_tmp = serverversion_array[i] as integer
-					if intversion_tmp < serversion_tmp do (
-						verfrag = 1
-					)
-				)
-				
-				if verfrag == 1 then (
-					upmzp = queryBox "Find a New Version ! want UPdate? " title:"notice"
-					if upmzp == true then (
-						getURL3 = substring getURL2 1 (getURL2.count - 8)
-						ShellLaunch getURL3 ""
-					)
-					else (
-						
-						)
-				)
-				else (
-					messagebox "CurrentVersion is latest Version. " title:"notice"
-				)
-			)
-			fnupcheck()
-		)
-	)
 	rollout aboutroll "About"
 	(
 		label Auther_lbl Auther align:#center
 		label makeby_lbl makeby align:#center
 	)
-	
-	AddSubRollout sRoll upcheckroll
 	AddSubRollout sRoll aboutroll
 )
 ---------------------------------------------------------------------------------------------------
