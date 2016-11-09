@@ -3,7 +3,7 @@
 	local Arc_1 = getFilenamePath (curve_Path) + "Arc001.max"
 
 	--localsetting end--
-		rcmenu mymenu
+	rcmenu mymenu
 	(
 		subMenu "menu1"
 		(
@@ -33,56 +33,7 @@
 		for f in allFiles where findItem extensions (tolower (getfilenametype f)) > 0 collect f
 	  )
 
-	--floating rollout--------------------------------------------------------------------------------------	
-		rollout Cecilia "CheckedObjects" width:218 height:250
-	(
-		MultiListBox Lst_hit "Multi List Box"
-		button seldup_bt "Select" width:140 height:30 align:#center
 
-		--on Lst_hit selected v do
-		--(
-			--if Lst_hit.selection[v] then
-			--selectMore (getNodeByName Lst_hit.items[v])
-			--else
-			--deselect (getNodeByName Lst_hit.items[v])
-		--)
-		on seldup_bt pressed do
-		(
-			local obj_array = #()
-			
-			for x = 1 to $objects.count do (append obj_array $objects[x])
-			deselect $*
-			for i = 1 to Cecilia_list_obj.count do
-			(
-				if Cecilia.Lst_hit.selection[i] == true do
-				(
-					for k = 1 to obj_array.count do
-					(
-						if Cecilia_list_obj[i] == obj_array[k].name do 
-						(
-							selectmore obj_array[k]
-							--print obj_array[k].name
-						)
-					)
-				)
-			)	
-		)-- end seldup_bt
-
-		on Cecilia open do
-		(
-			local items = sort Cecilia_list_obj
-			Lst_hit.items = items
-			Lst_hit.selection = #{}
-		)
-
-	)--rollout Cecilia end---
-
-	fn openCecilia = (
-		if dup_float != undefined do (closerolloutfloater dup_float)
-
-		dup_float = newrolloutfloater "Object List" 180 350
-		addrollout Cecilia dup_float
-	)
 	--main rollout---------------------------------------------------------------------------------------------	
 	fn createMainrollout newfloater = (
 		rollout main_rollout "madoka"
@@ -120,7 +71,7 @@
 					)
 					1:
 					(
-						dd_RenderRollouts subRoll
+						add_RenderRollouts subRoll
 					)
 					2:
 					(
