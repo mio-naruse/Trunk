@@ -1,19 +1,30 @@
-macroScript madoka category:"Madoka" internalCategory:"Madoka" toolTip:"madoka" buttonText:"madoka"
 (
 	--local setting--
-	global Cecilia_list_obj = #()
-	local xtrabonesarr 
-	local VersionInfo
-	local UPInfotxt
-	local Auther = " "
-	local makeby = "make by mio.naruse(+NRSE)"
-	local scriptroot = "$scripts\\Madoka\\"
-	local icon_Path = scriptroot + "icons\\"
-	local curve_Path = scriptroot + "curves\\"
-
 	local Arc_1 = getFilenamePath (curve_Path) + "Arc001.max"
 
 	--localsetting end--
+		rcmenu mymenu
+	(
+		subMenu "menu1"
+		(
+			menuItem item1 "item_1"
+			separator sp1
+			menuItem item2 "item_2"
+		)
+		subMenu "menu2"
+		(
+			menuItem item3 "item_3"
+			menuItem item4 "item_4"
+		)
+		on item1 picked do
+			(
+				rol1.lbl1.text="select item1"
+			)
+		on item2 picked do
+			(
+				item2.checked = not item2.checked
+			)
+	)
 	--fuctions--
 	fn collectFiles folder: extensions: = (
 		local sioDir = dotNetClass "System.IO.Directory"
@@ -72,10 +83,6 @@ macroScript madoka category:"Madoka" internalCategory:"Madoka" toolTip:"madoka" 
 		dup_float = newrolloutfloater "Object List" 180 350
 		addrollout Cecilia dup_float
 	)
-
-	---------------------------------------------------------------------------------------------------
-
-	include "$scripts\\madoka\\mdk_rollouts.ms"
 	--main rollout---------------------------------------------------------------------------------------------	
 	fn createMainrollout newfloater = (
 		rollout main_rollout "madoka"
@@ -83,7 +90,7 @@ macroScript madoka category:"Madoka" internalCategory:"Madoka" toolTip:"madoka" 
 			--Add a dot net tab control.
 			dotNetControl tabs "system.windows.forms.tabControl" width:173 height:30 pos:[2,1]
 			--Add a sub rollout.
-			subRollout subRoll "Sub" width:173 height:770 pos:[4,40]
+			subRollout subRoll "Sub" width:173 height:960 pos:[4,40]
 
 			--Tab initilization function--
 			fn initTabs tab labels:#() =
@@ -109,19 +116,19 @@ macroScript madoka category:"Madoka" internalCategory:"Madoka" toolTip:"madoka" 
 				(
 					default:
 					(
-						model_rollout subRoll
+						add_ModelRollouts subRoll
 					)
 					1:
 					(
-						render_rollout subRoll
+						dd_RenderRollouts subRoll
 					)
 					2:
 					(
-						anim_rollout subRoll
+						add_AnimRollouts subRoll
 					)
 					3:
 					(
-						about_rollout subRoll
+						add_AboutRollouts subRoll
 					)
 				)
 			)
@@ -144,19 +151,9 @@ macroScript madoka category:"Madoka" internalCategory:"Madoka" toolTip:"madoka" 
 	)
 		--Main Executing part------------------------------------------------------------------------------------------
 		on execute do (
-			--About & UPdate------------------------------------------------------------------------------------
-			fn currentVercheck = (
-				--getting now initial verssion--------------------------------------------
-				local scriptRoot = "$scripts\\Madoka\\"
-				local myUpdaterIni = (scriptRoot + "__version.ini")
-				local initVersion = (getINISetting myUpdaterIni "version" "VAL")
-				--view now version info at rollout-----------------------------------
-				VersionInfo = ("Current Version : " + initversion)
-			)
 			clearListener()
-			currentVercheck()
-			theNewFloater = newRolloutFloater "madoka" 184 825
+			theNewFloater = newRolloutFloater "madoka" 188 990
 			createMainrollout theNewFloater
-			--cui.RegisterDialogBar theNewFloater
+			cui.RegisterDialogBar theNewFloater
 			)
 )-- script end--

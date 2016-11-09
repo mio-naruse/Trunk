@@ -1,5 +1,54 @@
+	--floating rollout--------------------------------------------------------------------------------------	
+	rollout Cecilia "CheckedObjects" width:218 height:250
+	(
+		MultiListBox Lst_hit "Multi List Box"
+		button seldup_bt "Select" width:140 height:30 align:#center
+
+		--on Lst_hit selected v do
+		--(
+			--if Lst_hit.selection[v] then
+			--selectMore (getNodeByName Lst_hit.items[v])
+			--else
+			--deselect (getNodeByName Lst_hit.items[v])
+		--)
+		on seldup_bt pressed do
+		(
+			local obj_array = #()
+			
+			for x = 1 to $objects.count do (append obj_array $objects[x])
+			deselect $*
+			for i = 1 to Cecilia_list_obj.count do
+			(
+				if Cecilia.Lst_hit.selection[i] == true do
+				(
+					for k = 1 to obj_array.count do
+					(
+						if Cecilia_list_obj[i] == obj_array[k].name do 
+						(
+							selectmore obj_array[k]
+							--print obj_array[k].name
+						)
+					)
+				)
+			)	
+		)-- end seldup_bt
+
+		on Cecilia open do
+		(
+			local items = sort Cecilia_list_obj
+			Lst_hit.items = items
+			Lst_hit.selection = #{}
+		)
+
+	)--rollout Cecilia end---
+
+	fn openCecilia = (
+		if dup_float != undefined do (closerolloutfloater dup_float)
+
+		dup_float = newrolloutfloater "Object List" 180 350
+		addrollout Cecilia dup_float
+	)
 --ROLLOUTGROUP MODEL---------------------------------------------------------------------------
-fn model_rollout sRoll= (
 	--ScaleChecker
 	rollout Sylvia "Scale Checker" 
 	(
@@ -476,24 +525,7 @@ fn model_rollout sRoll= (
 			)
 		)
 	)
-
-	AddSubRollout sRoll Sylvia
-	AddSubRollout sRoll Melody
-	AddSubRollout sRoll Tina
-	AddSubRollout sRoll Stella rolledUp:true
-	AddSubRollout sRoll Matilda rolledUp:true
-	AddSubRollout sRoll Kelly rolledUp:true
-	AddSubRollout sRoll Priscilla
-	AddSubRollout sRoll Iris
-	AddSubRollout sRoll convinst rolledUp:true
-	AddSubRollout sRoll Lola
-	AddSubRollout sRoll Bonnie rolledUp:true
-	AddSubRollout sRoll Lisa
-	AddSubRollout sRoll Katherine
-)
-
 --ROLLOUTGROUP RENDARING----------------------------------------------------------------------
-fn render_rollout sRoll = (
 	--RenderElementRenamer------------------------------------------------------------
 	rollout Rebecca "RenderElementRenamer" 
 	(
@@ -547,11 +579,7 @@ fn render_rollout sRoll = (
 		)
 	)
 	-----------------------------------------------------------------------------------------
-	AddSubRollout sRoll Rebecca
-)
-
 --ROLLOUTGROUP ANIMATION-----------------------------------------------------------------------
-fn anim_rollout sRoll = (
 	--Biped Attach Tool------------------------------------------------------------
 	rollout Bicky "biped Attach Tool"
 	(
@@ -1259,18 +1287,47 @@ fn anim_rollout sRoll = (
 				)
 				)-- on BTN end--
 	)
-	-----------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+	rollout aboutroll "About"
+	(
+		--label Auther_lbl auther align:#center
+		label makeby_lbl makeby align:#center
+	)
+---------------------------------------------------------------------------------------------------
+
+
+fn add_ModelRollouts sRoll =(
+	AddSubRollout sRoll Sylvia
+	AddSubRollout sRoll Melody
+	AddSubRollout sRoll Tina
+	AddSubRollout sRoll Stella rolledUp:true
+	AddSubRollout sRoll Matilda rolledUp:true
+	AddSubRollout sRoll Kelly rolledUp:true
+	AddSubRollout sRoll Priscilla
+	AddSubRollout sRoll Iris
+	AddSubRollout sRoll convinst rolledUp:true
+	AddSubRollout sRoll Lola
+	AddSubRollout sRoll Bonnie rolledUp:true
+	AddSubRollout sRoll Lisa
+	AddSubRollout sRoll Katherine
+
+	AddSubRollout sRoll Rebecca
+
+	AddSubRollout sRoll Bicky
+	AddSubRollout sRoll Scarlett
+
+	AddSubRollout sRoll aboutroll
+)
+
+fn add_RenderRollouts sRoll =(
+	AddSubRollout sRoll Rebecca
+)
+
+fn add_AnimRollouts sRoll =(
 	AddSubRollout sRoll Bicky
 	AddSubRollout sRoll Scarlett
 )
----------------------------------------------------------------------------------------------------
 
-fn about_rollout sRoll = (
-	rollout aboutroll "About"
-	(
-		label Auther_lbl Auther align:#center
-		label makeby_lbl makeby align:#center
-	)
+fn add_AboutRollouts sRoll =(
 	AddSubRollout sRoll aboutroll
 )
----------------------------------------------------------------------------------------------------
