@@ -34,14 +34,9 @@ twitter @__NRSE
 	local hideintervaltime = 10 --インターバル時間（カウント数）
 ---------------------------------------------------------------------------------------------------------------------------------------------
 	--ルート宣言--
-	local scriptroot = "$scripts\\madoka\\"
+	local scriptroot = "C:\\Users\\PC-0253user\\Documents\\GitHub\\Trunk\\MAX\\MAXscript\\MADOKA_CA\\scripts\\madoka\\"
 	--ini設定宣言--
-	local myInifile = "$scripts\\madoka\\setting.ini"
-
-	--セリフテキスト用スクリプト読み込み--
-	fn loadghost pathstring = (
-		filein (pathstring + "ghost.ms")
-	)
+	local myInifile = "C:\\Users\\PC-0253user\\Documents\\GitHub\\Trunk\\MAX\\MAXscript\\MADOKA_CA\\scripts\\madoka\\setting.ini"
 
 	--画像取得関数--
 	fn collectFiles folder: extensions: = (
@@ -235,7 +230,7 @@ twitter @__NRSE
 	local bord_FullPath = loadghostsetting.fn_getGhostBordPath scriptroot ghostname ghostvariation
 
 	--[struct]ゴースト読み込み
-	ghost_Temp = loadghost ghost_path
+	ghost_Temp = loadghostsetting.fn_loadghost ghost_path
 	ghost = ghost_Temp
 	local nomaltxt = ghost.setnomaltxt()
 	local SPtxt = ghost.setSPtxt()
