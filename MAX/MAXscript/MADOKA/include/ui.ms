@@ -1,3 +1,10 @@
+		--画像取得関数--
+	fn collectFiles folder: extensions: = (
+		sioDir = dotNetClass "System.IO.Directory"
+		sioSOpt = (dotNetClass "System.IO.SearchOption").AllDirectories
+		allFiles = sioDir.GetFiles folder "*.*" sioSOpt
+		for f in allFiles where findItem extensions (tolower (getfilenametype f)) > 0 collect f
+	)
 	--floating rollout--------------------------------------------------------------------------------------	
 	rollout Cecilia "CheckedObjects" width:218 height:250
 	(
@@ -1288,10 +1295,39 @@
 				)-- on BTN end--
 	)
 ---------------------------------------------------------------------------------------------------
-	rollout aboutroll "About"
+fn createAboutRollout = (
+	--メインフォーム（本体）--------------------------------------------------------------
+	local MainFrm = dotNetObject "MaxCustomControls.MaxForm"
+	--本体Shell-------------------------
+	--local imgview = dotNetObject "System.Windows.Forms.PictureBox"
+
+	--本体--
+	--local mainimgfiles = shell_Array[1]
+	--local mainimgClass = dotNetClass	"System.Drawing.Image"
+	--local mainimg =(mainimgClass.FromFile mainimgfiles)
+	--local mainimgWidth = mainimg.Size.Width as integer
+	--local mainimgHeight = mainimg.Size.Height as integer
+
+	--メインフォームスタイル-----------------------
+	MainFrm.text = "madoka"
+	--MainFrm.StartPosition = MainFrm.StartPosition.Manual
+	--MainFrm.bounds = dotNetObject "system.drawing.rectangle" df_mainPosX df_mainPosY mainimgWidth mainimgHeight
+	--MainFrm.backColor = (dotNetClass "system.drawing.color").black
+	--MainFrm.TransparencyKey = (dotNetClass "system.drawing.color").black
+	--MainFrm.formBorderStyle = (dotNetClass "System.Windows.Forms.FormBorderStyle").none
+	--MainFrm.ShowInTaskBar =false
+	--MainFrm.TopMost=true
+
+	--本体表示--
+	MainFrm.Show()
+
+)
+
+	rollout Prefarenceroll "Prefarence" width:300 height:250
 	(
-		--label Auther_lbl auther align:#center
+		label Auther_lbl auther align:#center
 		label makeby_lbl makeby align:#center
+
 	)
 ---------------------------------------------------------------------------------------------------
 
@@ -1310,13 +1346,6 @@ fn add_ModelRollouts sRoll =(
 	AddSubRollout sRoll Bonnie rolledUp:true
 	AddSubRollout sRoll Lisa
 	AddSubRollout sRoll Katherine
-
-	AddSubRollout sRoll Rebecca
-
-	AddSubRollout sRoll Bicky
-	AddSubRollout sRoll Scarlett
-
-	AddSubRollout sRoll aboutroll
 )
 
 fn add_RenderRollouts sRoll =(

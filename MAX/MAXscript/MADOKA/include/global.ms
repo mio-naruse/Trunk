@@ -16,6 +16,7 @@ global Rebecca
 global Bicky
 global Scarlett
 global aboutroll
+global main_rollout
 ------------------------------------------
 global Cecilia_list_obj = #()
 global xtrabonesarr 
