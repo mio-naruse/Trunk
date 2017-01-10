@@ -1,4 +1,4 @@
-		--画像取得関数--
+--画像取得関数--
 	fn collectFiles folder: extensions: = (
 		sioDir = dotNetClass "System.IO.Directory"
 		sioSOpt = (dotNetClass "System.IO.SearchOption").AllDirectories
@@ -1295,33 +1295,28 @@
 				)-- on BTN end--
 	)
 ---------------------------------------------------------------------------------------------------
-fn createAboutRollout = (
-	--メインフォーム（本体）--------------------------------------------------------------
-	local MainFrm = dotNetObject "MaxCustomControls.MaxForm"
-	--本体Shell-------------------------
-	--local imgview = dotNetObject "System.Windows.Forms.PictureBox"
-
-	--本体--
-	--local mainimgfiles = shell_Array[1]
-	--local mainimgClass = dotNetClass	"System.Drawing.Image"
-	--local mainimg =(mainimgClass.FromFile mainimgfiles)
-	--local mainimgWidth = mainimg.Size.Width as integer
-	--local mainimgHeight = mainimg.Size.Height as integer
-
-	--メインフォームスタイル-----------------------
-	MainFrm.text = "madoka"
-	--MainFrm.StartPosition = MainFrm.StartPosition.Manual
-	--MainFrm.bounds = dotNetObject "system.drawing.rectangle" df_mainPosX df_mainPosY mainimgWidth mainimgHeight
-	--MainFrm.backColor = (dotNetClass "system.drawing.color").black
-	--MainFrm.TransparencyKey = (dotNetClass "system.drawing.color").black
-	--MainFrm.formBorderStyle = (dotNetClass "System.Windows.Forms.FormBorderStyle").none
-	--MainFrm.ShowInTaskBar =false
-	--MainFrm.TopMost=true
-
-	--本体表示--
-	MainFrm.Show()
-
-)
+	fn createAboutRollout = (
+		try(destroyDialog rollout_MDabout)catch()
+		
+		rollout rollout_MDabout "About" width:300 height:260
+		(
+			dotnetcontrol aboutTextbox "System.Windows.Forms.RichTextBox" width:(rollout_MDabout.width - 10) height:(rollout_MDabout.height - 10) align:#left pos:[5,5]
+			
+			on rollout_MDabout open do
+			(
+				aboutText = ("aaaaaaaaaaa")
+				aboutTextbox.multiline = true
+				aboutTextbox.wordwrap = true
+				aboutTextbox.ReadOnly = true
+				aboutTextbox.DetectUrls = false
+				aboutTextbox.BackColor = (dotNetClass "System.Drawing.Color").FromArgb 50 50 50 --68 68 68
+				aboutTextbox.ForeColor = (dotNetClass "System.Drawing.Color").FromArgb 200 200 200
+				aboutTextbox.BorderStyle = none
+				aboutTextbox.text = aboutText
+			)
+		)
+		createDialog rollout_MDabout	
+	)
 
 	rollout Prefarenceroll "Prefarence" width:300 height:250
 	(
@@ -1332,31 +1327,31 @@ fn createAboutRollout = (
 ---------------------------------------------------------------------------------------------------
 
 
-fn add_ModelRollouts sRoll =(
-	AddSubRollout sRoll Sylvia
-	AddSubRollout sRoll Melody
-	AddSubRollout sRoll Tina
-	AddSubRollout sRoll Stella rolledUp:true
-	AddSubRollout sRoll Matilda rolledUp:true
-	AddSubRollout sRoll Kelly rolledUp:true
-	AddSubRollout sRoll Priscilla
-	AddSubRollout sRoll Iris
-	AddSubRollout sRoll convinst rolledUp:true
-	AddSubRollout sRoll Lola
-	AddSubRollout sRoll Bonnie rolledUp:true
-	AddSubRollout sRoll Lisa
-	AddSubRollout sRoll Katherine
-)
+	fn add_ModelRollouts sRoll =(
+		AddSubRollout sRoll Sylvia
+		AddSubRollout sRoll Melody
+		AddSubRollout sRoll Tina
+		AddSubRollout sRoll Stella rolledUp:true
+		AddSubRollout sRoll Matilda rolledUp:true
+		AddSubRollout sRoll Kelly rolledUp:true
+		AddSubRollout sRoll Priscilla
+		AddSubRollout sRoll Iris
+		AddSubRollout sRoll convinst rolledUp:true
+		AddSubRollout sRoll Lola
+		AddSubRollout sRoll Bonnie rolledUp:true
+		AddSubRollout sRoll Lisa
+		AddSubRollout sRoll Katherine
+	)
 
-fn add_RenderRollouts sRoll =(
-	AddSubRollout sRoll Rebecca
-)
+	fn add_RenderRollouts sRoll =(
+		AddSubRollout sRoll Rebecca
+	)
 
-fn add_AnimRollouts sRoll =(
-	AddSubRollout sRoll Bicky
-	AddSubRollout sRoll Scarlett
-)
+	fn add_AnimRollouts sRoll =(
+		AddSubRollout sRoll Bicky
+		AddSubRollout sRoll Scarlett
+	)
 
-fn add_AboutRollouts sRoll =(
-	AddSubRollout sRoll aboutroll
-)
+	fn add_AboutRollouts sRoll =(
+		AddSubRollout sRoll aboutroll
+	)
