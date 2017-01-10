@@ -1295,33 +1295,29 @@
 				)-- on BTN end--
 	)
 ---------------------------------------------------------------------------------------------------
-fn createAboutRollout = (
-	--メインフォーム（本体）--------------------------------------------------------------
-	local MainFrm = dotNetObject "MaxCustomControls.MaxForm"
-	--本体Shell-------------------------
-	--local imgview = dotNetObject "System.Windows.Forms.PictureBox"
-
-	--本体--
-	--local mainimgfiles = shell_Array[1]
-	--local mainimgClass = dotNetClass	"System.Drawing.Image"
-	--local mainimg =(mainimgClass.FromFile mainimgfiles)
-	--local mainimgWidth = mainimg.Size.Width as integer
-	--local mainimgHeight = mainimg.Size.Height as integer
-
-	--メインフォームスタイル-----------------------
-	MainFrm.text = "madoka"
-	--MainFrm.StartPosition = MainFrm.StartPosition.Manual
-	--MainFrm.bounds = dotNetObject "system.drawing.rectangle" df_mainPosX df_mainPosY mainimgWidth mainimgHeight
-	--MainFrm.backColor = (dotNetClass "system.drawing.color").black
-	--MainFrm.TransparencyKey = (dotNetClass "system.drawing.color").black
-	--MainFrm.formBorderStyle = (dotNetClass "System.Windows.Forms.FormBorderStyle").none
-	--MainFrm.ShowInTaskBar =false
-	--MainFrm.TopMost=true
-
-	--本体表示--
-	MainFrm.Show()
-
-)
+	
+	fn createAboutRollout = (
+		try(destroyDialog rollout_MDabout)catch()
+		
+		rollout rollout_MDabout "About" width:300 height:260
+		(
+			dotnetcontrol aboutTextbox "System.Windows.Forms.RichTextBox" width:(rollout_MDabout.width - 10) height:(rollout_MDabout.height - 10) align:#left pos:[5,5]
+			
+			on rollout_MDabout open do
+			(
+				aboutText = ("aaaaaaaaaaa")
+				aboutTextbox.multiline = true
+				aboutTextbox.wordwrap = true
+				aboutTextbox.ReadOnly = true
+				aboutTextbox.DetectUrls = false
+				aboutTextbox.BackColor = (dotNetClass "System.Drawing.Color").FromArgb 50 50 50 --68 68 68
+				aboutTextbox.ForeColor = (dotNetClass "System.Drawing.Color").FromArgb 200 200 200
+				aboutTextbox.BorderStyle = none
+				aboutTextbox.text = aboutText
+			)
+		)
+		createDialog rollout_MDabout	
+	)
 
 	rollout Prefarenceroll "Prefarence" width:300 height:250
 	(
@@ -1329,6 +1325,7 @@ fn createAboutRollout = (
 		label makeby_lbl makeby align:#center
 
 	)
+
 ---------------------------------------------------------------------------------------------------
 
 
