@@ -4,21 +4,6 @@
 
 	--localsetting end--
 	--menu settimgs--
-	rcmenu madoka_premenu
-	(
-		subMenu "menu1"
-		(
-			menuItem item1 "item_1"
-			separator sp1
-			menuItem item2 "item_2"
-		)
-		
-		on item1 picked do
-			(
-				
-			)
-	)
-
 	rcmenu madoka_mainmenu
 	(
 		subMenu "menu1"
@@ -38,11 +23,11 @@
 			)
 		on item3 picked do
 			(
-				createdialog Prefarenceroll menu:madoka_premenu
+				madokaFn.ro_Prefarence()
 			)
 		on item4 picked do
 			(
-				createAboutRollout()
+				madokaFn.createAboutRollout()
 			)
 	)
 
@@ -78,15 +63,15 @@
 			(
 				default:
 				(
-					add_ModelRollouts subRoll
+					madokaFn.add_ModelRollouts subRoll
 				)
 				1:
 				(
-					add_RenderRollouts subRoll
+					madokaFn.add_RenderRollouts subRoll
 				)
 				2:
 				(
-					add_AnimRollouts subRoll
+					madokaFn.add_AnimRollouts subRoll
 				)
 			)
 		)

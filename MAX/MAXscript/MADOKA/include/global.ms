@@ -1,24 +1,8 @@
 --Rollouta name--
-global Sylvia
-global Melody
-global Tina
-global Stella
-global Matilda
-global Kelly
-global Priscilla
-global Iris
-global convinst
-global Lola
-global Bonnie
-global Lisa
-global Katherine
-global Rebecca
-global Bicky
-global Scarlett
-global aboutroll
+global madokaFn
 global main_rollout
 ------------------------------------------
-global Cecilia_list_obj = #()
+global Cecilia_list_obj
 global xtrabonesarr 
 global VersionInfo
 global UPInfotxt
