@@ -93,6 +93,7 @@
 		--Main Executing part------------------------------------------------------------------------------------------
 	on execute do (
 		clearListener()
+		madokaFn.INIfilecheck()
 		--theNewFloater = newRolloutFloater "madoka" 188 990
 		createdialog main_rollout 188 990 menu:madoka_mainmenu
 		cui.RegisterDialogBar main_rollout

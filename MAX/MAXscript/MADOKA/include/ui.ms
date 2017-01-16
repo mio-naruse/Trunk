@@ -1,5 +1,30 @@
 struct madokaFn(
 
+	--INIファイルチェック--
+	fn INIfilecheck =(
+		if (doesFileExist madokaINI_Path) == false do(
+			local firstsettype = "false"
+			setINISetting madokaINI_Path "Use characterized script" "set" (firstsettype as String)
+			)
+	),
+
+
+	fn prefINIget = (
+		local getprefstate = (getINISetting madokaINI_Path "Use characterized script" "set") as string
+		if getprefstate == "" then (
+			prefstate = "false"
+			)
+		else (
+			prefstate = getprefstate
+			)
+		return prefstate
+	),
+
+	--INI設定保存--
+	fn prefINIsave saveprefstate = (
+		setINISetting madokaINI_Path "Use characterized script" "set" ( savesettype as String)
+	),
+
 	--画像取得関数--
 	fn collectFiles folder: extensions: = (
 		sioDir = dotNetClass "System.IO.Directory"
@@ -1380,6 +1405,8 @@ struct madokaFn(
 
 ---------------------------------------------------------------------------------------------------
 	fn ro_Prefarence = (
+		checkBoxState = madokaFn.prefINIget()
+
 		try(destroyDialog Prefarenceroll)catch()
 		rcmenu madoka_premenu
 		(
@@ -1399,10 +1426,19 @@ struct madokaFn(
 		(
 			label Auther_lbl auther align:#center
 			label makeby_lbl makeby align:#center
+			checkbox pref_CA_box "Use characterized script" checked:true
+
+			on Prefarenceroll open do(
+				if checkBoxState == "true" then (
+					pref_CA_box.triState = 1
+					)
+				else (
+					pref_CA_box.triState = 0
+					)
+			)
 		)
 		createdialog Prefarenceroll menu:madoka_premenu
 	),
-
 ---------------------------------------------------------------------------------------------------
 
 	fn add_ModelRollouts sRoll =(
