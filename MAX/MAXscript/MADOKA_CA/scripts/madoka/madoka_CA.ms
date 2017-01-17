@@ -34,9 +34,9 @@ twitter @__NRSE
 	local hideintervaltime = 10 --インターバル時間（カウント数）
 ---------------------------------------------------------------------------------------------------------------------------------------------
 	--ルート宣言--
-	local scriptroot = "C:\\Users\\PC-0253user\\Documents\\GitHub\\Trunk\\MAX\\MAXscript\\MADOKA_CA\\scripts\\madoka\\"
+	--local CA_scriptroot = "C:\\Users\\PC-0253user\\Documents\\GitHub\\Trunk\\MAX\\MAXscript\\MADOKA_CA\\scripts\\madoka\\"
 	--ini設定宣言--
-	local myInifile = "C:\\Users\\PC-0253user\\Documents\\GitHub\\Trunk\\MAX\\MAXscript\\MADOKA_CA\\scripts\\madoka\\setting.ini"
+	local myInifile = CA_scriptroot + "\\setting.ini"
 
 	--画像取得関数--
 	fn collectFiles folder: extensions: = (
@@ -222,12 +222,12 @@ twitter @__NRSE
 	loadghostsetting = GhostSetting()
 	ghostname = loadghostsetting.fn_ghostname myInifile
 	ghostvariation = loadghostsetting.fn_ghostvariation myInifile
-	local ghost_path = loadghostsetting.fn_getGhostPath scriptroot ghostname ghostvariation
+	local ghost_path = loadghostsetting.fn_getGhostPath CA_scriptroot ghostname ghostvariation
 
 	--パス宣言--
-	local shell_FullPath = loadghostsetting.fn_getGhostShellPath scriptroot ghostname ghostvariation
-	local baloon_FullPath = loadghostsetting.fn_getGhostBaloonPath scriptroot
-	local bord_FullPath = loadghostsetting.fn_getGhostBordPath scriptroot ghostname ghostvariation
+	local shell_FullPath = loadghostsetting.fn_getGhostShellPath CA_scriptroot ghostname ghostvariation
+	local baloon_FullPath = loadghostsetting.fn_getGhostBaloonPath CA_scriptroot
+	local bord_FullPath = loadghostsetting.fn_getGhostBordPath CA_scriptroot ghostname ghostvariation
 
 	--[struct]ゴースト読み込み
 	ghost_Temp = loadghostsetting.fn_loadghost ghost_path

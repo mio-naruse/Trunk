@@ -22,7 +22,7 @@ struct madokaFn(
 
 	--INI設定保存--
 	fn prefINIsave saveprefstate = (
-		setINISetting madokaINI_Path "Use characterized script" "set" ( savesettype as String)
+		setINISetting madokaINI_Path "Use characterized script" "set" (saveprefstate as String)
 	),
 
 	--画像取得関数--
@@ -1385,12 +1385,12 @@ struct madokaFn(
 
 			on rollout_MDabout open do
 			(
-				aboutText = ("aaaaaaaaaaa")
+				aboutText = ("ほむほむはいません")
 				aboutTextbox.multiline = true
 				aboutTextbox.wordwrap = true
 				aboutTextbox.ReadOnly = true
 				aboutTextbox.DetectUrls = false
-				aboutTextbox.BackColor = (dotNetClass "System.Drawing.Color").FromArgb 50 50 50 --68 68 68
+				aboutTextbox.BackColor = (dotNetClass "System.Drawing.Color").FromArgb 50 50 50
 				aboutTextbox.ForeColor = (dotNetClass "System.Drawing.Color").FromArgb 200 200 200
 				aboutTextbox.BorderStyle = none
 				aboutTextbox.text = aboutText
@@ -1405,30 +1405,16 @@ struct madokaFn(
 
 ---------------------------------------------------------------------------------------------------
 	fn ro_Prefarence = (
-		checkBoxState = madokaFn.prefINIget()
 
 		try(destroyDialog Prefarenceroll)catch()
-		rcmenu madoka_premenu
-		(
-			subMenu "menu1"
-			(
-				menuItem item1 "item_1"
-				separator sp1
-				menuItem item2 "item_2"
-			)
-			
-			on item1 picked do
-				(
-					
-				)
-		)
+
 		rollout Prefarenceroll "Prefarence" width:300 height:250
 		(
-			label Auther_lbl auther align:#center
-			label makeby_lbl makeby align:#center
-			checkbox pref_CA_box "Use characterized script" checked:true
+			checkbox pref_CA_box "Use characterized script" checked:true pos:[20,20]
 
 			on Prefarenceroll open do(
+				checkBoxState = madokaFn.prefINIget()
+
 				if checkBoxState == "true" then (
 					pref_CA_box.triState = 1
 					)
@@ -1436,6 +1422,31 @@ struct madokaFn(
 					pref_CA_box.triState = 0
 					)
 			)
+
+			on pref_CA_box changed thestate do (
+				checkBoxState = thestate
+				)
+		)
+		rcmenu madoka_premenu
+		(
+			subMenu "File"
+			(
+				menuItem item1 "Save Prefarence"
+				separator sp1
+				menuItem item2 "Reset Prefarence"
+			)
+			
+			on item1 picked do
+				(
+					madokaFn.prefINIsave checkBoxState
+				)
+
+			on item2 picked do
+				(
+					checkBoxState = "false"
+					madokaFn.prefINIsave checkBoxState
+					Prefarenceroll.pref_CA_box.triState = 0
+				)
 		)
 		createdialog Prefarenceroll menu:madoka_premenu
 	),

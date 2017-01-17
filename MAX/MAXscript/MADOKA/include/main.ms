@@ -1,31 +1,22 @@
 (
 	--local setting--
 	local Arc_1 = getFilenamePath (curve_Path) + "Arc001.max"
-
 	--localsetting end--
 	--menu settimgs--
 	rcmenu madoka_mainmenu
 	(
-		subMenu "menu1"
-		(
-			menuItem item1 "item_1"
-			separator sp1
-			menuItem item2 "item_2"
-		)
 		subMenu "info"
 		(
-			menuItem item3 "Prefarence..."
-			menuItem item4 "about..."
+			menuItem item1 "Prefarence..."
+			separator sp1
+			menuItem item2 "about..."
 		)
+
 		on item1 picked do
-			(
-				
-			)
-		on item3 picked do
 			(
 				madokaFn.ro_Prefarence()
 			)
-		on item4 picked do
+		on item2 picked do
 			(
 				madokaFn.createAboutRollout()
 			)
@@ -94,6 +85,11 @@
 	on execute do (
 		clearListener()
 		madokaFn.INIfilecheck()
+		checkini = madokaFn.prefINIget()
+
+		if checkini == "true" do (
+			filein madokaCA_Path
+		)
 		--theNewFloater = newRolloutFloater "madoka" 188 990
 		createdialog main_rollout 188 990 menu:madoka_mainmenu
 		cui.RegisterDialogBar main_rollout
