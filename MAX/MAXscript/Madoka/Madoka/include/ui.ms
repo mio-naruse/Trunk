@@ -1374,18 +1374,26 @@ struct madokaFn(
 		AddSubRollout sRoll Scarlett
 	),
 ---------------------------------------------------------------------------------------------------
-	
-	fn createAboutRollout = (
-		try(destroyDialog rollout_MDabout)catch()
-		
-		rollout rollout_MDabout "About" width:620 height:480
-		(
-			dotnetcontrol aboutTextbox "System.Windows.Forms.RichTextBox" width:(rollout_MDabout.width - 10) height:(rollout_MDabout.height - 118) align:#left pos:[5,85]
-			Button about_BTN "OK"  width:(rollout_MDabout.width - 10) height:23 align:#center
+	fn readAboutFile =
+	(
+	aboutFile = openFile  ((getDir #scripts) + "\\Madoka\\include\\about.txt") mode:#rt
+	fileText = readDelimitedString aboutFile "~"
+	close aboutFile
+	fileText
+	),
 
-			on rollout_MDabout open do
+	fn createAboutRollout = (
+		try(destroyDialog Aimee)catch()
+		
+		rollout Aimee "About" width:620 height:480
+		(
+			label Version VersionInfo pos:[5,67]
+			dotnetcontrol aboutTextbox "System.Windows.Forms.RichTextBox" width:(Aimee.width - 10) height:(Aimee.height - 118) align:#left pos:[5,85]
+			Button about_BTN "OK"  width:(Aimee.width - 10) height:23 align:#center
+
+			on Aimee open do
 			(
-				aboutText = ("ほむほむはいません")
+				aboutText = madokaFn.readAboutFile()
 				aboutTextbox.multiline = true
 				aboutTextbox.wordwrap = true
 				aboutTextbox.ReadOnly = true
@@ -1397,22 +1405,22 @@ struct madokaFn(
 			)
 			on about_BTN pressed do
 			(
-				destroyDialog rollout_MDabout
+				destroyDialog Aimee
 			)
 		)
-		createDialog rollout_MDabout	
+		createDialog Aimee	
 	),
 
 ---------------------------------------------------------------------------------------------------
 	fn ro_Prefarence = (
 
-		try(destroyDialog Prefarenceroll)catch()
+		try(destroyDialog Patty)catch()
 
-		rollout Prefarenceroll "Prefarence" width:300 height:250
+		rollout Patty "Prefarence" width:300 height:250
 		(
 			checkbox pref_CA_box "Use characterized script" checked:true pos:[20,20]
 
-			on Prefarenceroll open do(
+			on Patty open do(
 				checkBoxState = madokaFn.prefINIget()
 
 				if checkBoxState == "true" then (
@@ -1445,10 +1453,10 @@ struct madokaFn(
 				(
 					checkBoxState = "false"
 					madokaFn.prefINIsave checkBoxState
-					Prefarenceroll.pref_CA_box.triState = 0
+					Patty.pref_CA_box.triState = 0
 				)
 		)
-		createdialog Prefarenceroll menu:madoka_premenu
+		createdialog Patty menu:madoka_premenu
 	),
 ---------------------------------------------------------------------------------------------------
 

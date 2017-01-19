@@ -1,6 +1,6 @@
 (
 	--local setting--
-	local Arc_1 = getFilenamePath (curve_Path) + "Arc001.max"
+	--local Arc_1 = getFilenamePath (curve_Path) + "Arc001.max"
 	--localsetting end--
 	--menu settimgs--
 	rcmenu madoka_mainmenu
