@@ -1,12 +1,3 @@
-/*******************************************************
-MAXScript + DotNet Knowledge Anchoring Program
-CharacterScriptSeries "madoka"
-********************************************************
-Name: 支援スクリプト『まどか』
-Created By:+NRSE(成瀬　澪)
-twitter @__NRSE
-*******************************************************/
---macroScript CSS_madoka category:"madoka" toolTip:"madoka" Icon:#("madoka",1)
 (
 	--ゴースト格納用グローバル変数-----------------------------------------------------------
 	global ghost_Temp
