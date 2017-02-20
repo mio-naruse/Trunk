@@ -1,5 +1,0 @@
-
-MAXScript + DotNet Knowledge Anchoring Script "Madoka"
-
-Copyright(c) 2017 Mio Naruse. All Rights Reserved.
-
