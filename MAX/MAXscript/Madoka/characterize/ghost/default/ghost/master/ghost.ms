@@ -1,4 +1,4 @@
-struct ghost
+struct loadghost
 (
 	fn setnomaltxt = (
 		btxt = #()

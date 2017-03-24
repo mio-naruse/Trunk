@@ -1,9 +1,23 @@
+--ゴースト格納用グローバル変数-----------------------------------------------------------
+global scriptroot = (getDir #scripts) + "\\Madoka\\"
+global CA_scriptroot = scriptroot + "characterize\\"
+global madokaCA_Path = CA_scriptroot + "CAmain.ms"
+global GhostInifile = CA_scriptroot + "setting.ini"
+global loadghostsetting
+global ghost_path
+global ghost
+global ghostname
+global ghostvariation
+filein ((getDir #scripts) + "\\Madoka\\characterize\\ghost\\ghostsetting.ms")
+--[struct]ゴーストセッティング--
+loadghostsetting = GhostSetting()
+loadghostsetting.GhostINIfilecheck
+ghostname = loadghostsetting.fn_ghostname GhostInifile
+ghostvariation = loadghostsetting.fn_ghostvariation GhostInifile
+ghost_path = loadghostsetting.fn_getGhostPath CA_scriptroot ghostname ghostvariation
+filein ghost_path
+
 (
-	--ゴースト格納用グローバル変数-----------------------------------------------------------
-	global ghost_Temp
-	global loadghostsetting
-	global ghostname
-	global ghostvariation
 	--バルーン用フォーム----------------------------------------------------------------
 	local baloonFrm = dotNetObject "System.Windows.Forms.Form"
 	--セリフテキスト用ラベル-------------------------
@@ -28,7 +42,7 @@
 	--ルート宣言--
 	--local CA_scriptroot = "C:\\Users\\PC-0253user\\Documents\\GitHub\\Trunk\\MAX\\MAXscript\\MADOKA_CA\\scripts\\madoka\\"
 	--ini設定宣言--
-	local myInifile = CA_scriptroot + "\\setting.ini"
+	--local GhostInifile = CA_scriptroot + "setting.ini"
 
 	--画像取得関数--
 	fn collectFiles folder: extensions: = (
@@ -125,10 +139,10 @@
 
 	--[INI]ウィンドウ位置取得
 	fn fnLoadWinPosByIni = (
-		main_posX = (getINISetting myInifile "MainPos" "x") as Float
-		main_posY = (getINISetting myInifile "MainPos" "y") as Float
-		baloon_posX = (getINISetting myInifile "BaloonPos" "x") as Float
-		baloon_posY = (getINISetting myInifile "BaloonPos" "y") as Float
+		main_posX = (getINISetting GhostInifile "MainPos" "x") as Float
+		main_posY = (getINISetting GhostInifile "MainPos" "y") as Float
+		baloon_posX = (getINISetting GhostInifile "BaloonPos" "x") as Float
+		baloon_posY = (getINISetting GhostInifile "BaloonPos" "y") as Float
 
 		--初回起動時--
 		if main_posX == 0.0 AND main_posY == 0.0 then (
@@ -148,10 +162,10 @@
 
 	--[INI]ウィンドウ位置保存
 	fn fnSaveWinPosByIni = (
-		setINISetting myInifile "MainPos" "x" ( MainFrm.location.X as String)
-		setINISetting myInifile "MainPos" "y" ( MainFrm.location.Y as String)
-		setINISetting myInifile "BaloonPos" "x" ( baloonFrm.location.X as String)
-		setINISetting myInifile "BaloonPos" "y" ( baloonFrm.location.Y as String)
+		setINISetting GhostInifile "MainPos" "x" ( MainFrm.location.X as String)
+		setINISetting GhostInifile "MainPos" "y" ( MainFrm.location.Y as String)
+		setINISetting GhostInifile "BaloonPos" "x" ( baloonFrm.location.X as String)
+		setINISetting GhostInifile "BaloonPos" "y" ( baloonFrm.location.Y as String)
 	)
 
 	--本体マウスイベント設定-----------------------------------------------------------
@@ -203,8 +217,8 @@
 
 	fn FrmClose sender srg = (
 		fnSaveWinPosByIni()
-		loadghostsetting.fn_setghostname myInifile ghostname
-		loadghostsetting.fn_setghostvariation myInifile ghostvariation
+		loadghostsetting.fn_setghostname GhostInifile ghostname
+		loadghostsetting.fn_setghostvariation GhostInifile ghostvariation
 		TimerStop settimer
 		TimerStop timer2H
 		TimerStop hidetimer
@@ -213,11 +227,6 @@
 	)
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
-	--[struct]ゴーストセッティング--
-	loadghostsetting = GhostSetting()
-	ghostname = loadghostsetting.fn_ghostname myInifile
-	ghostvariation = loadghostsetting.fn_ghostvariation myInifile
-	local ghost_path = loadghostsetting.fn_getGhostPath CA_scriptroot ghostname ghostvariation
 
 	--パス宣言--
 	local shell_FullPath = loadghostsetting.fn_getGhostShellPath CA_scriptroot ghostname ghostvariation
@@ -225,8 +234,7 @@
 	local bord_FullPath = loadghostsetting.fn_getGhostBordPath CA_scriptroot ghostname ghostvariation
 
 	--[struct]ゴースト読み込み
-	filein ((getDir #scripts) + "\\Madoka\\characterize\\ghost\\default\\ghost\\master\\ghost.ms")
-	ghost = ghost()
+	ghost = loadghost()
 	local nomaltxt = ghost.setnomaltxt()
 	local SPtxt = ghost.setSPtxt()
 	local texcount = nomaltxt.count

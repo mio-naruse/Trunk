@@ -1,4 +1,9 @@
 (
+	--既存ロールアウトを閉じる--
+	try (
+	cui.UnRegisterDialogBar main_rollout
+	DestroyDialog main_rollout
+	) catch()
 	--local setting--
 	--local Arc_1 = getFilenamePath (curve_Path) + "Arc001.max"
 	--localsetting end--
@@ -84,12 +89,6 @@
 		--Main Executing part------------------------------------------------------------------------------------------
 	on execute do (
 		clearListener()
-		madokaFn.INIfilecheck()
-		checkini = madokaFn.prefINIget()
-
-		if checkini == "true" do (
-			filein madokaCA_Path
-		)
 		--theNewFloater = newRolloutFloater "madoka" 188 990
 		createdialog main_rollout 188 990 menu:madoka_mainmenu
 		cui.RegisterDialogBar main_rollout

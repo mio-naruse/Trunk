@@ -1,5 +1,15 @@
 struct GhostSetting
 (
+		--INIファイルチェック--
+	fn GhostINIfilecheck =(
+		if (doesFileExist GhostInifile) == false do(
+			local firstsettype = "default"
+			local secondsettype = "master"
+			setINISetting GhostInifile "GHOST" "name" (firstsettype as String)
+			setINISetting GhostInifile "GHOST" "variation" (secondsettype as String)
+			)
+	),
+
 	fn fn_ghostname ini = (
 		local getghostname = (getINISetting ini "GHOST" "name") as string
 		if getghostname == "" then (
@@ -24,7 +34,7 @@ struct GhostSetting
 
 	--パス宣言--
 	fn fn_getGhostPath scriptroot namestring variationstring = (
-		ghost_Path = scriptroot + "ghost\\" + namestring + "\\ghost\\" + variationstring + "\\"
+		ghost_Path = scriptroot + "ghost\\" + namestring + "\\ghost\\" + variationstring + "\\" + "ghost.ms"
 	),
 
 	fn fn_getGhostShellPath scriptroot namestring variationstring = (
