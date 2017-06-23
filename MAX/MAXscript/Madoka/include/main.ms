@@ -63,11 +63,11 @@
 				)
 				1:
 				(
-					madokaFn.add_RenderRollouts subRoll
+					madokaFn.add_SetupRollouts subRoll
 				)
 				2:
 				(
-					madokaFn.add_AnimRollouts subRoll
+					madokaFn.add_RenderRollouts subRoll
 				)
 			)
 		)
@@ -82,7 +82,7 @@
 		--When the rollout opens initilize the tab control
 		on main_rollout open do
 		(
-			initTabs tabs labels:#("Model", "Render", "Anim")
+			initTabs tabs labels:#("Model", "Setup", "Render")
 			addTabRollout 0
 		)
 	)--rollout end--

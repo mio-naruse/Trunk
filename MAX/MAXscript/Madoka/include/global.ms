@@ -2,6 +2,7 @@ global madokaFn
 global main_rollout
 global Patty
 global checkBoxState
+global wpcAtr
 ------------------------------------------
 global Cecilia_list_obj
 global xtrabonesarr 

@@ -1,4 +1,4 @@
-macroScript madoka category:"Madoka" internalCategory:"Madoka" toolTip:"madoka" buttonText:"madoka"
+macroScript madoka category:"madoka" internalCategory:"madoka" toolTip:"madoka" buttonText:"madoka"
 		(
-			try(filein ((getDir #scripts) + "\\MADOKA\\madoka.ms"))catch()	
+			try(filein ((getDir #scripts) + "\\Madoka\\madoka.ms"))catch()	
 		)

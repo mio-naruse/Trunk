@@ -1373,7 +1373,330 @@ struct madokaFn(
 		)
 		AddSubRollout sRoll Scarlett
 	),
----------------------------------------------------------------------------------------------------
+--CreateStretchBone------------------------------------------------------------
+    fn ro_Catherine sRoll =(
+	    rollout Catherine "Create Stretch Bone" width:218 height:120
+	    (
+		    button Catherine_BTN "Create Stretch Bone" width:140 height:30 align:#center
+
+		on Catherine_BTN pressed do
+		(
+			fn createsetupBone = (
+
+				fn createBone bonelength step=(
+
+
+					local parentBone
+					local endbone
+				    local exBone
+					fn createendbone Pbone = (
+					    parentTrans = PBone.transform
+						parentPos = parentTrans.translation
+
+						EBone=BoneSys.createBone parentPos (parentPos+6) PBone.dir
+						EBone.transform = parentTrans
+						in coordSys Local move EBone [PBone.length,0,0]
+
+						EBone.parent = PBone
+						EBone.width = PBone.width
+						EBone.height = PBone.height
+						EBone.taper = 90
+						EBone.length =  (PBone.width+PBone.height)/2
+						EBone.wirecolor = PBone.wirecolor
+						)
+
+
+					startPos=[0,0,0]
+					endPos=[bonelength,0,0]
+					parentBone = boneSys.createBone startPos endPos [0,0,1]
+					parentBone.width = 4.0
+					parentBone.height = 4.0
+					parentBone.taper = 90
+					parentBone.sideFins = off
+					parentBone.frontFin = on
+					parentBone.backFIn = off
+				     
+				    exBone = parentBOne
+				    if step >1 then (
+						for i = 1 to (step - 1) do (
+							parentTrans = parentBone.transform
+							parentPos = parentTrans.translation
+
+							endBone=BoneSys.createBone parentPos (parentPos+6) parentBone.dir
+							endBone.transform = parentTrans
+							in coordSys Local move endBone [parentBone.length,0,0]
+
+							endBone.parent = parentBone
+							endBone.width = parentBone.width
+							endBone.height = parentBone.height
+							endBone.taper = 90
+							endBone.length = parentBone.length
+							endBone.wirecolor = parentBone.wirecolor
+
+							parentBone = endBone
+						)
+					    createendbone parentbone
+					 )
+				    else(
+						createendbone parentbone
+				    )
+				    return exBone
+				)
+
+				subBone = createBone 20 1
+				endsubBone= subBone.children[1]
+
+
+				mkrtpoint = Point pos:[subBone.pos.x,subBone.pos.y,subBone.pos.z] size:0.718 Box:off cross:on
+				mkrtpoint.parent = subBone
+				mkrtpoint.name = subBone.name + "_rt"
+				mkrtpoint.wirecolor = color 106 5 100
+
+
+				mkgimpoint = Point pos:[subBone.pos.x,subBone.pos.y,subBone.pos.z] size:1.722 Box:on cross:off
+				mkgimpoint.parent = mkrtpoint
+				mkgimpoint.name = subBone.name + "_gim"
+				mkgimpoint.wirecolor = color 39 6 6
+
+				mkctlpoint = Point pos:[subBone.pos.x,subBone.pos.y,subBone.pos.z] size:8.0 Box:on cross:off
+				mkctlpoint.parent = mkgimpoint
+				mkctlpoint.name = subBone.name + "_ctl"
+				mkctlpoint.wirecolor = color 88 199 225
+
+
+				mksknpoint = Point pos:[subBone.pos.x,subBone.pos.y,subBone.pos.z] size:2.44 Box:on cross:off
+				mksknpoint.parent = mkctlpoint
+				mksknpoint.name = subBone.name + "_skn"
+				mksknpoint.wirecolor = color 8 17 86
+
+
+				mklookpoint = Point pos:[subBone.length,subBone.pos.y,subBone.pos.z] size:9.4 Box:on cross:on
+				mklookpoint.name = subBone.name + "_point"
+				mklookpoint.wirecolor = color 14 255 2
+
+
+				subBone.rotation.controller = rotation_list ()
+				subBone.rotation.controller.enabled.controller = LookAt_Constraint ()
+
+				subBone.rotation.controller.setActive 2
+
+				subBone.rotation.controller.LookAt_Constraint.controller.appendTarget mklookpoint 50.0
+				subBone.rotation.controller.LookAt_Constraint.controller.StoUP_axis = 2
+				subBone.rotation.controller.LookAt_Constraint.controller.StoUP_axisFlip = on
+				subBone.rotation.controller.LookAt_Constraint.controller.upnode_axis = 1
+				subBone.rotation.controller.LookAt_Constraint.controller.lookat_vector_length = 0
+
+
+				endsubBone.pos.controller = position_list ()
+				endsubBone.pos.controller.enabled.controller = Position_Constraint ()
+				endsubBone.pos.controller.setActive 2
+
+				endsubBone.pos.controller.Position_Constraint.controller.appendTarget mklookpoint 50.0
+
+			)
+			createsetupBone()
+			)
+	    )
+	    AddSubRollout sRoll Catherine
+	),
+--Mirror transform------------------------------------------------------------
+    fn ro_Mildred sRoll = (
+		rollout Mildred "Mirror transform"
+		(
+
+			label Mildred_lbl_M "mirror axis" align:#left
+			checkbox axis_x "X"checked:true pos:[(Mildred_lbl_M.pos.x + 50),Mildred_lbl_M.pos.y]
+			checkbox axis_y "Y"checked:false pos:[(Mildred_lbl_M.pos.x + 80),Mildred_lbl_M.pos.y]
+			checkbox axis_z "Z"checked:false pos:[(Mildred_lbl_M.pos.x + 110),Mildred_lbl_M.pos.y]
+			Button Mildred_BTN "mirror"  width:140 height:30 align:#center
+
+			on axis_x changed true do 
+			(
+				axis_y.triState = 0
+				axis_z.triState = 0
+			)
+			on axis_y changed true do 
+			(
+				axis_x.triState = 0
+				axis_z.triState = 0
+			)
+			on axis_z changed true do 
+			(
+				axis_x.triState = 0
+				axis_y.triState = 0
+			) 
+
+			on Mildred_BTN pressed do
+			(
+				undo on
+				(
+					obj = selection as array
+					if obj.count == 1 do
+					(
+						addnode = pickobject rubberband:obj[1].pos rubberBandColor:yellow
+						if addnode != undefined do (
+							if axis_x.checked == true do
+							(
+									initpos = obj[1].pos
+									addnode.pos = [0,0,0]
+									initrotate = quatToEuler (inverse obj[1].rotation)
+									addnode.rotation = inverse ((eulerAngles initrotate.x -initrotate.y -initrotate.z)as quat)
+									addnode.pos = [-initpos.x,initpos.y,initpos.z]
+							)
+
+							if axis_y.checked == true do
+							(
+									initpos = obj[1].pos
+									addnode.pos = [0,0,0]
+									initrotate = quatToEuler (inverse obj[1].rotation)
+									addnode.rotation = inverse ((eulerAngles -initrotate.x initrotate.y -initrotate.z)as quat)
+									addnode.pos = [initpos.x,-initpos.y,initpos.z]
+							)
+
+							if axis_z.checked == true do
+							(
+									initpos = obj[1].pos
+									addnode.pos = [0,0,0]
+									initrotate = quatToEuler (inverse obj[1].rotation)
+									addnode.rotation = inverse ((eulerAngles -initrotate.x (initrotate.y + 180) (initrotate.z+180))as quat)
+									addnode.pos = [initpos.x,initpos.y,-initpos.z]
+							)
+						)
+					)
+				)
+			)
+		)
+		AddSubRollout sRoll Mildred
+	),
+    fn ro_Moira sRoll = (
+		rollout Moira "Add Morpher" width:218 height:120
+		(
+			button Moira_BTN "Create Morpher" width:140 height:30 align:#center
+			fn addmodmopher addobject SLMT = (
+				addmodifier addobject (Morpher ())
+				for i = 1 to SLMT.count do (
+					
+					targetname = SLMT[i].name as string
+					channelname = targetname
+					
+					WM3_MC_BuildFromNode addobject.morpher i SLMT[i]
+					addobject.modifiers[#Morpher].Autoload_of_targets = 1
+					WM3_MC_SetValue addobject.morpher i 0.0
+					WM3_SetProgressiveMorphWeight addobject.morpher i SLMT[i] 100.0
+					WM3_MC_SetName addobject.Morpher i channelname
+				)	
+			)
+			
+			fn nameStringSort_Fn s1 s2 = (
+			 --名前の文字列を比較した結果を代入
+			 local a = (stricmp s1.name s2.name)
+
+			 --比較結果から仕分けを行う
+			 case of
+			  (
+			  (a < 0.): -1
+			  (a > 0.): 1
+			  default: 0
+			  )--case end
+			)--fn end
+
+			on Moira_BTN pressed do
+			(
+			selarray = #()
+			selarray = selection as array
+			qsort selarray nameStringSort_Fn
+			
+				if selarray.count >0 then (
+					origobj = pickobject rubberband:selarray[1].pos rubberBandColor:yellow
+					if origobj != undefined do (
+						addmodmopher origobj selarray
+					)
+				)
+				else (
+					messagebox "モーフターゲットとして追加するオブジェクトを選択してください。"
+					)
+			)
+		)
+		AddSubRollout sRoll Moira
+	),
+-------------------------------------------------------------------------------------
+    fn ro_Wendy sRoll = (
+        rollout Wendy "Wire Parameter Connector" width:218 height:120
+	    (
+			button Wendy_bt "Connect" width:140 height:30 align:#center
+			on Wendy_bt pressed do
+			(
+				local str
+				selarray = #()
+				selarray = selection as array
+
+				usemorph=#()
+				
+				if selarray.count == 1 then (
+					addnode = pickobject rubberband:selarray[1].pos rubberBandColor:yellow
+					if addnode != undefined do (
+						addmodifier addnode (EmptyModifier ())
+
+						for i = 1 to 100 do (
+							j = 1
+							bool = (WM3_MC_HasData selarray[1].Morpher i) as string
+								
+							if bool == "true" do (
+								cname = WM3_MC_GetName selarray[1].Morpher i
+								append usemorph cname
+								j = j+1
+								)
+						)
+
+
+						str = ""
+						str += "wpcAtr = attributes morph\n"
+						str += "(\n"
+						str += "parameters params rollout:roll\n"
+						str += "(\n"
+						for i = 1 to usemorph.count do
+						(
+							str += "item" + (i as string) + " type:#float ui:spn" + (i as string) + " default:0\n"
+						)
+						str += ")\n"
+						str += "rollout roll \"morph\"\n"
+						str += "(\n"
+						for i = 1 to usemorph.count do
+						(
+							nm = " spn" + (i as string)
+							caption = "\"" + usemorph[i] + ":\""
+							str += "spinner" + nm + caption + " type:#float scale:1.0 align:#Right\n"
+						)
+						str +=")\n"
+						str += ")\n"
+						execute (str)
+						custAttributes.add addnode.modifiers wpcAtr
+
+
+						for i = 1 to usemorph.count do (
+							
+							_POBJ_mopher = addnode.modifiers[#Attribute_Holder]
+							counter= _POBJ_mopher.Morph[i]
+							
+							toprm = selarray[1].morpher
+							
+							pp= "item" + (i as string)
+							paramWire.connect counter toprm[i] pp
+						 )
+					 )
+				)
+				else(
+						messagebox "オブジェクトを選択してください。"
+					)
+			)
+		 )
+		 AddSubRollout sRoll Wendy
+	),
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------
 	fn readAboutFile =
 	(
 	aboutFile = openFile  ((getDir #scripts) + "\\Madoka\\include\\about.txt") mode:#rt
@@ -1468,10 +1791,9 @@ struct madokaFn(
 		madokaFn.ro_Matilda sRoll
 		madokaFn.ro_Kelly sRoll
 		madokaFn.ro_Priscilla sRoll
-		madokaFn.ro_Iris sRoll
 		madokaFn.ro_Charlotte sRoll
 		madokaFn.ro_Lola sRoll
-		madokaFn.ro_Bonnie sRoll
+		--madokaFn.ro_Bonnie sRoll
 		madokaFn.ro_Lisa sRoll
 		madokaFn.ro_Katherine sRoll
 	),
@@ -1480,8 +1802,13 @@ struct madokaFn(
 		madokaFn.ro_Rebecca sRoll
 	),
 
-	fn add_AnimRollouts sRoll =(
-		madokaFn.ro_Bicky sRoll
+	fn add_SetupRollouts sRoll =(
+		madokaFn.ro_Iris sRoll
+		madokaFn.ro_Catherine sRoll
+		madokaFn.ro_Mildred sRoll
+		madokaFn.ro_Moira sRoll
+		--madokaFn.ro_Bicky sRoll
+		madokaFn.ro_Wendy sRoll
 		madokaFn.ro_Scarlett sRoll
 	)
 )
