@@ -1742,6 +1742,7 @@ struct madokaFn(
 		rollout Patty "Prefarence" width:300 height:250
 		(
 			checkbox pref_CA_box "Use characterized script" checked:true pos:[20,20]
+			Button pref_save_BTN "Save"  width:(Patty.width - 10) height:23 pos:[5,222]
 
 			on Patty open do(
 				checkBoxState = madokaFn.prefINIget()
@@ -1757,22 +1758,21 @@ struct madokaFn(
 			on pref_CA_box changed thestate do (
 				checkBoxState = thestate
 				)
+
+			on pref_save_BTN pressed do
+			(
+				madokaFn.prefINIsave checkBoxState
+				destroyDialog Patty
+			)
 		)
 		rcmenu madoka_premenu
 		(
 			subMenu "File"
 			(
-				menuItem item1 "Save Prefarence"
-				separator sp1
-				menuItem item2 "Reset Prefarence"
+				menuItem item1 "Reset Prefarence"
 			)
-			
-			on item1 picked do
-				(
-					madokaFn.prefINIsave checkBoxState
-				)
 
-			on item2 picked do
+			on item1 picked do
 				(
 					checkBoxState = "false"
 					madokaFn.prefINIsave checkBoxState

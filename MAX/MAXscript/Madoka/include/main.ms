@@ -10,18 +10,23 @@
 	--menu settimgs--
 	rcmenu madoka_mainmenu
 	(
-		subMenu "info"
+		subMenu "Config"
 		(
-			menuItem item1 "Prefarence..."
-			separator sp1
-			menuItem item2 "about..."
+			menuItem prefmenu "Prefarence..."
 		)
 
-		on item1 picked do
+		subMenu "help"
+		(
+	        menuItem helpmenu "help"
+	        separator sp1
+			menuItem aboutmenu "about..."
+	    )
+
+		on prefmenu picked do
 			(
 				madokaFn.ro_Prefarence()
 			)
-		on item2 picked do
+		on aboutmenu picked do
 			(
 				madokaFn.createAboutRollout()
 			)
