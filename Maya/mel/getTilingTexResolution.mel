@@ -1,8 +1,0 @@
-//1m:512の場合
-
-global proc getTilingTexResolution(){
-    float $area[] =`polyEvaluate -wa`;
-    float $area_topix = `sqrt (($area[0]/10000)*262144)`;
-    print ("１辺" + $area_topix + "ピクセルの正方形テクスチャで入ります(1m:512pix)");
-}
-//----------------------------------------------------------------------------
