@@ -1,0 +1,32 @@
+global proc idgroup()
+{
+   string $selobj[] = `ls -sl`;
+    int $kazu = `size($selobj )` ;
+    int $x;
+    int $i = 0;
+    string $array[];
+    string $name[];
+    string $list[];
+    for ($x = 0 ; $x < $kazu ; $x++){
+        string $selobj[] = `ls -sl`; 
+        string $array[] = stringToStringArray($selobj[$x], "_"); 
+        $name[$x] = $array[0];
+        }
+        string $list[] = stringArrayRemoveDuplicates($name);
+        print $list;
+        
+    for ($x = 0 ; $x < `size($list)` ; $x++){
+        string $nameT;
+        $nameT = $list[$x] + "_";
+        group -em -name $nameT;
+
+        for ($y = 0 ; $y < $kazu ; $y++){
+            string $nameS;
+	        string $array[] = stringToStringArray($selobj[$y], "_"); 
+	        $nameS = $array[0]+ "_";
+	        if ($nameT==$nameS)
+	        parent $selobj[$y] $nameT;
+	        
+        }
+    }
+}
