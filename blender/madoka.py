@@ -28,6 +28,7 @@ class MadokaSetOrigin(bpy.types.Operator):
     def execute(self, context):
         # 現在のアクティブオブジェクトをactive_objとして保存しておく
         active_obj = context.active_object
+        # originをバウンディングボックスの中心に設定
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='BOUNDS')
 
         # 選択オブジェクトの回転値をすべてゼロに
@@ -70,7 +71,7 @@ class MadokaSetOrigin(bpy.types.Operator):
         return {'FINISHED'}
 
 
-# Sidebarのタブ [カスタムタブ] に、パネル [カスタムパネル] を追加
+# Sidebarのタブ [madoka]（カテゴリー） に、パネル [madora]（ラベル） を追加
 class MadokaCustomPanel(bpy.types.Panel):
 
     bl_label = "madoka"         # パネルのヘッダに表示される文字列
