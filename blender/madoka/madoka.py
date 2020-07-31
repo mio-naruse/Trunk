@@ -1,7 +1,7 @@
 # bpyインポート
 import bpy
 from mathutils import Matrix, Vector
-import copy
+import numpy as np
 
 bl_info = {
     "name": "Madoka",
@@ -58,18 +58,30 @@ class MadokaSetOriginXmin(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        # 現在のアクティブオブジェクトをactive_objとして保存しておく
-        active_obj = context.active_object
 
+        active_obj = context.active_object
         matrix=Matrix()
+        use_verts=False
+
         me = active_obj.data
         mw = active_obj.matrix_world
-        local_verts = [matrix @ Vector(v[:]) for v in active_obj.bound_box]
-        o = sum(local_verts, Vector()) / 8
-        o.x = min(v.x for v in local_verts)
-        o = matrix.inverted() @ o
-        me.transform(Matrix.Translation(-o))
 
+        if use_verts:
+            data = (v.co for v in me.vertices)
+        else:
+            data = (Vector(v) for v in active_obj.bound_box)
+
+        coords = np.array([matrix @ v for v in data])
+
+        x = coords.T[0]
+        # y = coords.T[1]
+        # z = coords.T[2]
+        mins = np.take(coords, np.where(x == x.min())[0], axis=0)
+
+        o = Vector(np.mean(mins, axis=0))
+        o = matrix.inverted() @ o
+
+        me.transform(Matrix.Translation(-o))
         mw.translation = mw @ o
 
         # オペレータメッセージを出力するメソッド
@@ -97,18 +109,30 @@ class MadokaSetOriginYmin(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        # 現在のアクティブオブジェクトをactive_objとして保存しておく
-        active_obj = context.active_object
 
+        active_obj = context.active_object
         matrix=Matrix()
+        use_verts=False
+
         me = active_obj.data
         mw = active_obj.matrix_world
-        local_verts = [matrix @ Vector(v[:]) for v in active_obj.bound_box]
-        o = sum(local_verts, Vector()) / 8
-        o.y = min(v.y for v in local_verts)
-        o = matrix.inverted() @ o
-        me.transform(Matrix.Translation(-o))
 
+        if use_verts:
+            data = (v.co for v in me.vertices)
+        else:
+            data = (Vector(v) for v in active_obj.bound_box)
+
+        coords = np.array([matrix @ v for v in data])
+
+        #x = coords.T[0]
+        y = coords.T[1]
+        #z = coords.T[2]
+        mins = np.take(coords, np.where(y == y.min())[0], axis=0)
+
+        o = Vector(np.mean(mins, axis=0))
+        o = matrix.inverted() @ o
+
+        me.transform(Matrix.Translation(-o))
         mw.translation = mw @ o
 
         # オペレータメッセージを出力するメソッド
@@ -136,18 +160,30 @@ class MadokaSetOriginZmin(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        # 現在のアクティブオブジェクトをactive_objとして保存しておく
-        active_obj = context.active_object
 
+        active_obj = context.active_object
         matrix=Matrix()
+        use_verts=False
+
         me = active_obj.data
         mw = active_obj.matrix_world
-        local_verts = [matrix @ Vector(v[:]) for v in active_obj.bound_box]
-        o = sum(local_verts, Vector()) / 8
-        o.z = min(v.z for v in local_verts)
-        o = matrix.inverted() @ o
-        me.transform(Matrix.Translation(-o))
 
+        if use_verts:
+            data = (v.co for v in me.vertices)
+        else:
+            data = (Vector(v) for v in active_obj.bound_box)
+
+        coords = np.array([matrix @ v for v in data])
+
+        # x = coords.T[0]
+        # y = coords.T[1]
+        z = coords.T[2]
+        mins = np.take(coords, np.where(z == z.min())[0], axis=0)
+
+        o = Vector(np.mean(mins, axis=0))
+        o = matrix.inverted() @ o
+
+        me.transform(Matrix.Translation(-o))
         mw.translation = mw @ o
 
         # オペレータメッセージを出力するメソッド
