@@ -203,10 +203,10 @@ class MadokaSetOriginZmin(bpy.types.Operator):
 # Sidebarのタブ [カスタムタブ] に、パネル [カスタムパネル] を追加
 class MadokaCustomPanel(bpy.types.Panel):
 
-    bl_label = "madoka"         # パネルのヘッダに表示される文字列
+    bl_label = "Madoka"         # パネルのヘッダに表示される文字列
     bl_space_type = 'VIEW_3D'           # パネルを登録するスペース
     bl_region_type = 'UI'               # パネルを登録するリージョン
-    bl_category = "madoka"        # パネルを登録するタブ名
+    bl_category = "Madoka"        # パネルを登録するタブ名
     bl_context = "objectmode"           # パネルを表示するコンテキスト
 
     # 本クラスの処理が実行可能かを判定する
