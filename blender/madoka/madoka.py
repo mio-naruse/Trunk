@@ -1,12 +1,14 @@
 # bpyインポート
 import bpy
+from mathutils import Matrix, Vector
+import numpy as np
 
 bl_info = {
-    "name": "madoka",
+    "name": "Madoka",
     "author": "__NRSE",
     "version": (0, 1),
     "blender": (2, 80, 0),
-    "location": "View3D > Sidebar > madoka",
+    "location": "View3D > Sidebar > Madoka",
     "description": "test addon",
     "warning": "",
     "support": 'TESTING',
@@ -15,47 +17,21 @@ bl_info = {
     "category": "Object"
 }
 
-class MadokaSetOrigin(bpy.types.Operator):
+class MadokaSetOriginC(bpy.types.Operator):
     #Blender内部で使用するID [str]
-    bl_idname = "object.set_origin"
+    bl_idname = "object.set_origin_center"
     # BlenderのUI上で表示される文字列[str]
-    bl_label = "Set objact Origin"
+    bl_label = "Set objact Origin Center"
     # BlenderのUI上で表示される説明文[str]
-    bl_description = "Set origin an active object"
+    bl_description = "Set origin Center an active object"
     # オペレータの属性[set]
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
         # 現在のアクティブオブジェクトをactive_objとして保存しておく
         active_obj = context.active_object
-        # originをバウンディングボックスの中心に設定
-        bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='BOUNDS')
 
-        # 選択オブジェクトの回転値をすべてゼロに
-        active_obj.rotation_euler[0] = 0
-        active_obj.rotation_euler[1] = 0
-        active_obj.rotation_euler[2] = 0
-
-        # 選択オブジェクトの座標をゼロにして原点に移動
-        active_obj.location[0] = 0
-        active_obj.location[1] = 0
-        active_obj.location[2] = 0
-
-
-        #cursorpos = copy.copy(bpy.context.scene.cursor_location)
-
-        # dimensions（境界面、バウンディングボックス）の大きさを取得
-        dx = active_obj.dimensions.x
-        dy = active_obj.dimensions.y
-        dz = active_obj.dimensions.z
-
-        # 境界面Zの半分だけ移動
-        active_obj.location[2] = dz/2
-
-        # 3Dカーソルの位置を指定位置（原点）に移動する
-        bpy.context.scene.cursor.location = (0,0,0)
-        # オブジェクトの原点を3Dカーソル位置に移動する
-        bpy.ops.object.origin_set(type='ORIGIN_CURSOR')
+        bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='MEDIAN')
 
         # オペレータメッセージを出力するメソッド
         # 引数
@@ -71,13 +47,166 @@ class MadokaSetOrigin(bpy.types.Operator):
         return {'FINISHED'}
 
 
-# Sidebarのタブ [madoka]（カテゴリー） に、パネル [madora]（ラベル） を追加
+class MadokaSetOriginXmin(bpy.types.Operator):
+    #Blender内部で使用するID [str]
+    bl_idname = "object.set_origin_xmin"
+    # BlenderのUI上で表示される文字列[str]
+    bl_label = "Set objact Origin -X"
+    # BlenderのUI上で表示される説明文[str]
+    bl_description = "Set origin -X an active object"
+    # オペレータの属性[set]
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+
+        active_obj = context.active_object
+        matrix=Matrix()
+        use_verts=False
+
+        me = active_obj.data
+        mw = active_obj.matrix_world
+
+        if use_verts:
+            data = (v.co for v in me.vertices)
+        else:
+            data = (Vector(v) for v in active_obj.bound_box)
+
+        coords = np.array([matrix @ v for v in data])
+
+        x = coords.T[0]
+        # y = coords.T[1]
+        # z = coords.T[2]
+        mins = np.take(coords, np.where(x == x.min())[0], axis=0)
+
+        o = Vector(np.mean(mins, axis=0))
+        o = matrix.inverted() @ o
+
+        me.transform(Matrix.Translation(-o))
+        mw.translation = mw @ o
+
+        # オペレータメッセージを出力するメソッド
+        # 引数
+        #   第1引数: オペレータメッセージの種類 [set]
+        #   第2引数: オペレータメッセージ本文 [str]
+        self.report({'INFO'},
+                    "madoka: Set objact Origin '{}'"
+                    .format(active_obj.name))
+        # コンソールウィンドウへメッセージを出力
+        print("madoka: Operator '{}' is executed".format(self.bl_idname))
+
+        # オペレータが正常終了したことをBlenderに通知
+        return {'FINISHED'}
+
+
+class MadokaSetOriginYmin(bpy.types.Operator):
+    #Blender内部で使用するID [str]
+    bl_idname = "object.set_origin_ymin"
+    # BlenderのUI上で表示される文字列[str]
+    bl_label = "Set objact Origin -Y"
+    # BlenderのUI上で表示される説明文[str]
+    bl_description = "Set origin -Y an active object"
+    # オペレータの属性[set]
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+
+        active_obj = context.active_object
+        matrix=Matrix()
+        use_verts=False
+
+        me = active_obj.data
+        mw = active_obj.matrix_world
+
+        if use_verts:
+            data = (v.co for v in me.vertices)
+        else:
+            data = (Vector(v) for v in active_obj.bound_box)
+
+        coords = np.array([matrix @ v for v in data])
+
+        #x = coords.T[0]
+        y = coords.T[1]
+        #z = coords.T[2]
+        mins = np.take(coords, np.where(y == y.min())[0], axis=0)
+
+        o = Vector(np.mean(mins, axis=0))
+        o = matrix.inverted() @ o
+
+        me.transform(Matrix.Translation(-o))
+        mw.translation = mw @ o
+
+        # オペレータメッセージを出力するメソッド
+        # 引数
+        #   第1引数: オペレータメッセージの種類 [set]
+        #   第2引数: オペレータメッセージ本文 [str]
+        self.report({'INFO'},
+                    "madoka: Set objact Origin '{}'"
+                    .format(active_obj.name))
+        # コンソールウィンドウへメッセージを出力
+        print("madoka: Operator '{}' is executed".format(self.bl_idname))
+
+        # オペレータが正常終了したことをBlenderに通知
+        return {'FINISHED'}
+
+
+class MadokaSetOriginZmin(bpy.types.Operator):
+    #Blender内部で使用するID [str]
+    bl_idname = "object.set_origin_zmin"
+    # BlenderのUI上で表示される文字列[str]
+    bl_label = "Set objact Origin -Z"
+    # BlenderのUI上で表示される説明文[str]
+    bl_description = "Set origin -Z an active object"
+    # オペレータの属性[set]
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+
+        active_obj = context.active_object
+        matrix=Matrix()
+        use_verts=False
+
+        me = active_obj.data
+        mw = active_obj.matrix_world
+
+        if use_verts:
+            data = (v.co for v in me.vertices)
+        else:
+            data = (Vector(v) for v in active_obj.bound_box)
+
+        coords = np.array([matrix @ v for v in data])
+
+        # x = coords.T[0]
+        # y = coords.T[1]
+        z = coords.T[2]
+        mins = np.take(coords, np.where(z == z.min())[0], axis=0)
+
+        o = Vector(np.mean(mins, axis=0))
+        o = matrix.inverted() @ o
+
+        me.transform(Matrix.Translation(-o))
+        mw.translation = mw @ o
+
+        # オペレータメッセージを出力するメソッド
+        # 引数
+        #   第1引数: オペレータメッセージの種類 [set]
+        #   第2引数: オペレータメッセージ本文 [str]
+        self.report({'INFO'},
+                    "madoka: Set objact Origin '{}'"
+                    .format(active_obj.name))
+        # コンソールウィンドウへメッセージを出力
+        print("madoka: Operator '{}' is executed".format(self.bl_idname))
+
+        # オペレータが正常終了したことをBlenderに通知
+        return {'FINISHED'}
+
+
+# Sidebarのタブ [カスタムタブ] に、パネル [カスタムパネル] を追加
 class MadokaCustomPanel(bpy.types.Panel):
 
-    bl_label = "madoka"         # パネルのヘッダに表示される文字列
+    bl_label = "Madoka"         # パネルのヘッダに表示される文字列
     bl_space_type = 'VIEW_3D'           # パネルを登録するスペース
     bl_region_type = 'UI'               # パネルを登録するリージョン
-    bl_category = "madoka"        # パネルを登録するタブ名
+    bl_category = "Madoka"        # パネルを登録するタブ名
     bl_context = "objectmode"           # パネルを表示するコンテキスト
 
     # 本クラスの処理が実行可能かを判定する
@@ -101,12 +230,21 @@ class MadokaCustomPanel(bpy.types.Panel):
 
         # ボタンを追加
         layout.label(text="set origin:")
-        layout.operator(MadokaSetOrigin.bl_idname, text="z")
+        layout.operator(MadokaSetOriginC.bl_idname, text="center")
+
+        # 一行配置（アライメントなし）
+        row = layout.row(align=True)
+        row.operator(MadokaSetOriginXmin.bl_idname, text="Xmin" )
+        row.operator(MadokaSetOriginYmin.bl_idname, text="Ymin" )
+        row.operator(MadokaSetOriginZmin.bl_idname, text="Zmin" )
 
 
 # Blenderに登録するクラス
 classes = [
-    MadokaSetOrigin,
+    MadokaSetOriginC,
+    MadokaSetOriginXmin,
+    MadokaSetOriginYmin,
+    MadokaSetOriginZmin,
     MadokaCustomPanel,
 ]
 
